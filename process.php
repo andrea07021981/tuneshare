@@ -1,4 +1,7 @@
-<?php require_once('header.php'); ?>
+<?php
+    require_once('header.php');
+    session_start();
+?>
 <body class="add">
 <div class="container inner saved">
 <header class="masthead mb-auto">
@@ -14,8 +17,8 @@
 <h1> TuneShare - Share Your Fave Tunes & Join The Community </h1>
 <main>
     <?php
-
     $first_name = filter_input(INPUT_POST, 'fname');
+    $_SESSION['first_name'] = $first_name;
     $last_name = filter_input(INPUT_POST, 'lname');
     $genre = filter_input(INPUT_POST, 'genre');
     $location = filter_input(INPUT_POST, 'location');
@@ -122,7 +125,11 @@
             $statement->execute();
 
             // show message
-            echo "<p> Song added! Thanks for sharing! </p>";
+            if(isset($_SESSION['first_name'])) {
+                echo "<p> Hi ". $_SESSION['first_name']. ", we have added your song! Thanks for sharing! </p>";
+            } else {
+                echo "<p> Song added! Thanks for sharing! </p>";
+            }
 
             // disconnecting
             $statement->closeCursor();
